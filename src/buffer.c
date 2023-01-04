@@ -25,7 +25,7 @@ int32_t Buffer_Read(Buffer_t *buf, void *dst, uint16_t itemNum)
   uint32_t length = (uint32_t)itemNum * (uint32_t)buf->itemSz;
   uint8_t *dstBytes = dst;
 
-  if (buf->buffer == NULL || dst == NULL) return -1;
+  if (buf == NULL || buf->buffer == NULL || dstBytes == NULL) return -1;
 
   while (length--) {
     if (buf->r_idx == buf->w_idx && !buf->isOverlap) break;
@@ -47,7 +47,7 @@ int32_t Buffer_Write(Buffer_t *buf, void *src, uint16_t itemNum)
   uint32_t length = (uint32_t)itemNum * (uint32_t)buf->itemSz;
   uint8_t *srcBytes = src;
 
-  if (buf->buffer == NULL || srcBytes == NULL) return -1;
+  if (buf == NULL || buf->buffer == NULL || srcBytes == NULL) return -1;
 
   while (length--) {
     *(((uint8_t*)buf->buffer)+buf->w_idx) = *srcBytes;
