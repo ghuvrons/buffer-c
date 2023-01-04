@@ -14,15 +14,16 @@
 #define Buffer_IsAvailable(buf) ((buf)->buffer && !((buf)->r_idx == (buf)->w_idx && !(buf)->isOverlap))
 
 typedef struct {
-  uint8_t   *buffer;
-  size_t    size;
-  uint16_t  w_idx;
-  uint16_t  r_idx;
+  void      *buffer;
+  size_t    itemSz;
+  uint32_t  bufferLength;
+  uint32_t  w_idx;
+  uint32_t  r_idx;
   uint8_t   isOverlap;
 } Buffer_t;
 
-void    Buffer_Init(Buffer_t *buf, uint8_t *bufferData, size_t size);
-int32_t Buffer_Read(Buffer_t *buf, uint8_t *data, size_t length);
-int32_t Buffer_Write(Buffer_t *buf, uint8_t *data, size_t length);
+void    Buffer_Init(Buffer_t *buf, void *bufferData, size_t itemSz, uint16_t length);
+int32_t Buffer_Read(Buffer_t *buf, void *dst, uint16_t itemNum);
+int32_t Buffer_Write(Buffer_t *buf, void *src, uint16_t itemNum);
 
 #endif /* INC_BUFFER_H_ */
