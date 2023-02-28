@@ -24,6 +24,6 @@ typedef struct {
 
 void    Buffer_Init(Buffer_t *buf, void *bufferData, size_t itemSz, uint16_t length);
 int32_t Buffer_Read(Buffer_t *buf, void *dst, uint16_t itemNum);
-int32_t Buffer_Write(Buffer_t *buf, void *src, uint16_t itemNum);
+int32_t Buffer_Write(Buffer_t *buf, const void *src, uint16_t itemNum);
 
 #endif /* INC_BUFFER_H_ */

@@ -48,11 +48,11 @@ finish:
 }
 
 
-int32_t Buffer_Write(Buffer_t *buf, void *src, uint16_t itemNum)
+int32_t Buffer_Write(Buffer_t *buf, const void *src, uint16_t itemNum)
 {
   uint16_t writeLen = 0;
   uint32_t length = (uint32_t)itemNum;
-  uint8_t *srcBytes = src;
+  const uint8_t *srcBytes = src;
   size_t i;
 
   if (buf == NULL || buf->buffer == NULL || srcBytes == NULL) return -1;
