@@ -12,6 +12,7 @@
 #include <stdint.h>
 
 #define Buffer_IsAvailable(buf) ((buf)->buffer && !((buf)->r_idx == (buf)->w_idx && !(buf)->isOverlap))
+#define Buffer_Flush(buf)       {(buf)->isOverlap = 0; (buf)->r_idx = (buf)->w_idx;}
 
 typedef struct {
   void      *buffer;
