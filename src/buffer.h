@@ -11,16 +11,24 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define Buffer_IsAvailable(buf) ((buf)->buffer && !((buf)->r_idx == (buf)->w_idx && !(buf)->isOverlap))
-#define Buffer_Flush(buf)       {(buf)->isOverlap = 0; (buf)->r_idx = (buf)->w_idx;}
+#define BUFFER_STATUS_OVERLAP 0x01
+#define BUFFER_STATUS_WRITING 0x02
+#define BUFFER_STATUS_READING 0x04
+
+#define BUFFER_STATUS_IS(buf, _status)    (((buf)->status & (_status)) != 0)
+#define BUFFER_STATUS_SET(buf, _status)   {(buf)->status |= (_status);}
+#define BUFFER_STATUS_UNSET(buf, _status) {(buf)->status &= ~(_status);}
+
+#define Buffer_IsAvailable(buf) ((buf)->buffer && BUFFER_STATUS_IS(buf, BUFFER_STATUS_READING|BUFFER_STATUS_WRITING) && ((buf)->r_idx != (buf)->w_idx || BUFFER_STATUS_IS((buf), BUFFER_STATUS_OVERLAP)))
+#define Buffer_Flush(buf)       {BUFFER_STATUS_UNSET((buf), BUFFER_STATUS_OVERLAP); (buf)->r_idx = (buf)->w_idx;}
 
 typedef struct {
+  uint8_t   status;
   void      *buffer;
   size_t    itemSz;
   uint32_t  bufferLength;
   uint32_t  w_idx;
   uint32_t  r_idx;
-  uint8_t   isOverlap;
 } Buffer_t;
 
 void    Buffer_Init(Buffer_t *buf, void *bufferData, size_t itemSz, uint16_t length);
