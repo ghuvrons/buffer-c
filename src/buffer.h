@@ -19,7 +19,7 @@
 #define BUFFER_STATUS_SET(buf, _status)   {(buf)->status |= (_status);}
 #define BUFFER_STATUS_UNSET(buf, _status) {(buf)->status &= ~(_status);}
 
-#define Buffer_IsAvailable(buf) ((buf)->buffer && BUFFER_STATUS_IS(buf, BUFFER_STATUS_READING|BUFFER_STATUS_WRITING) && ((buf)->r_idx != (buf)->w_idx || BUFFER_STATUS_IS((buf), BUFFER_STATUS_OVERLAP)))
+#define Buffer_IsAvailable(buf) ((buf)->buffer && !BUFFER_STATUS_IS(buf, BUFFER_STATUS_READING|BUFFER_STATUS_WRITING) && ((buf)->r_idx != (buf)->w_idx || BUFFER_STATUS_IS((buf), BUFFER_STATUS_OVERLAP)))
 #define Buffer_Flush(buf)       {BUFFER_STATUS_UNSET((buf), BUFFER_STATUS_OVERLAP); (buf)->r_idx = (buf)->w_idx;}
 
 typedef struct {
