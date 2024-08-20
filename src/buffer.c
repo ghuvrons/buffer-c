@@ -22,7 +22,6 @@ void Buffer_Init(Buffer_t *buf, void *bufferData, size_t itemSz, uint16_t length
 int32_t Buffer_Read(Buffer_t *buf, void *dst, uint16_t itemNum)
 {
   uint32_t readLen = 0;
-  uint32_t length = (uint32_t)itemNum * (uint32_t)buf->itemSz;
   uint8_t *dstBytes = dst;
   size_t i;
 
@@ -30,7 +29,7 @@ int32_t Buffer_Read(Buffer_t *buf, void *dst, uint16_t itemNum)
 
   BUFFER_STATUS_SET(buf, BUFFER_STATUS_READING);
 
-  while (length--) {
+  while (itemNum--) {
     for (i = 0; i < buf->itemSz; i++) {
       if (buf->r_idx == buf->w_idx && !BUFFER_STATUS_IS(buf, BUFFER_STATUS_OVERLAP)) {
         goto finish;
@@ -54,7 +53,6 @@ finish:
 int32_t Buffer_Write(Buffer_t *buf, const void *src, uint16_t itemNum)
 {
   uint16_t writeLen = 0;
-  uint32_t length = (uint32_t)itemNum;
   const uint8_t *srcBytes = src;
   size_t i;
 
@@ -62,7 +60,7 @@ int32_t Buffer_Write(Buffer_t *buf, const void *src, uint16_t itemNum)
 
   BUFFER_STATUS_SET(buf, BUFFER_STATUS_WRITING);
 
-  while (length--) {
+  while (itemNum--) {
     for (i = 0; i < buf->itemSz; i++) {
       *(((uint8_t*)buf->buffer)+buf->w_idx) = *srcBytes;
 
